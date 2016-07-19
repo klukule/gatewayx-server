@@ -7,7 +7,7 @@ var passport		= require('passport');
 var config      = require('./config/database');
 var User        = require('./app/models/user');
 var Machine     = require('./app/models/vm');
-var port        = process.env.PORT || 8080;
+var port        = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var jwt         = require('jwt-simple');
 
 
@@ -23,9 +23,17 @@ app.use(morgan('dev'));
 app.use(passport.initialize());
 app.use(allowCrossDomain);
 
-
-
-mongoose.connect(config.database);
+var db = config.database;
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  db = 'mongodb://'+
+  process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+mongoose.connect(db);
 
 require('./config/passport')(passport);
 
