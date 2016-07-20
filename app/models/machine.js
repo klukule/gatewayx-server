@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // set up a mongoose model
-var VMSchema = new Schema({
+// TODO: Propper Schema when finished database design
+var MachineSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -11,10 +12,10 @@ var VMSchema = new Schema({
     type: String,
     required: true
   },
-  ip: {
+  ip:{
     type: String,
-    unique: true,
-    required: true
+    required: true,
+    unique: true    
   },
   lat:{
     type: Number,
@@ -26,4 +27,4 @@ var VMSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('VM', VMSchema);
+module.exports = mongoose.model('machine', MachineSchema);
