@@ -2,20 +2,19 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // set up a mongoose model
-// TODO: Propper Schema when finished database design
 var MachineSchema = new Schema({
   name: {
     type: String,
+    unique: true,
     required: true
   },
   owner: {
     type: String,
     required: true
   },
-  ip:{
+  hardware:{
     type: String,
-    required: true,
-    unique: true    
+    required: true
   },
   lat:{
     type: Number,
@@ -26,5 +25,4 @@ var MachineSchema = new Schema({
     required: true
   }
 });
-
-module.exports = mongoose.model('machine', MachineSchema);
+module.exports = mongoose.model('Machine', MachineSchema);

@@ -5,7 +5,9 @@ var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var passport		= require('passport');
 var config      = require('./config/database');
-var port        = 8080;
+var port        = 3000;
+var http       = require("http").Server(app);
+var io          = require("socket.io")(http);
 
 //Enable Cross Domain requiests
 var allowCrossDomain = function(req, res, next) {
@@ -25,6 +27,7 @@ app.use(allowCrossDomain);
 mongoose.connect(config.database);
 
 require('./config/passport')(passport);
+
 /*
 *
 * API begin
@@ -37,5 +40,6 @@ API.Register(require("./API/v1/api.js"));
 app.use( '/api', API.Router );
 
 //Server start
-app.listen( port );
-console.log( 'GatewayX Server runnig on ' + port + '!' );
+http.listen(port, function(){
+  console.log( 'GatewayX Server runnig on ' + port + '!' );
+});
